@@ -9,10 +9,10 @@ class MockGetAppsPlatform
     with MockPlatformInterfaceMixin
     implements GetAppsPlatform {
   @override
-  Future<List<AppInfo>> getAllApps() => Future.value([]);
+  Future<List<AppInfo>> getApps({bool includeSystemApps = false}) => Future.value([]);
 
   @override
-  Future<List<AppInfo>> getUserApps() => Future.value([]);
+  Future<void> openApp(String packageName) => Future.value();
 }
 
 void main() {
@@ -22,12 +22,11 @@ void main() {
     expect(initialPlatform, isInstanceOf<MethodChannelGetApps>());
   });
 
-  test('getAllApps and getUserApps Test', () async {
+  test('getApps Test', () async {
     GetApps getAppsPlugin = GetApps();
     MockGetAppsPlatform fakePlatform = MockGetAppsPlatform();
     GetAppsPlatform.instance = fakePlatform;
 
-    expect(await getAppsPlugin.getAllApps(), []);
-    expect(await getAppsPlugin.getUserApps(), []);
+    expect(await getAppsPlugin.getApps(), []);
   });
 }

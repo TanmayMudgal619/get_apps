@@ -12,10 +12,9 @@ import android.util.Base64
 import java.io.ByteArrayOutputStream
 
 
-class GetApps internal constructor(context: Context) {
+class GetApps internal constructor(ctx: Context) {
     init {
-        var context = context
-        context = context
+        context = ctx
         val packageManager = context.packageManager
         Companion.allApps = ArrayList()
         Companion.userApps = ArrayList()
@@ -69,8 +68,21 @@ class GetApps internal constructor(context: Context) {
         return appInfo
     }
 
+    public fun openApp(packageName: String){
+        val launchIntent = context.packageManager.getLaunchIntentForPackage(packageName);
+        if (launchIntent == null){
+            throw Exception("Can't open the app!")
+        }
+        try{
+            context.startActivity(launchIntent);
+        }
+        catch (err: Exception){
+            throw Exception("Can't open the app with error: ${err.toString()}")
+        }
+    }
+
     companion object {
-        private val context: Context? = null
+        private lateinit var context: Context
         private lateinit var allApps: MutableList<Map<String, Any>>
         private lateinit var userApps: MutableList<Map<String, Any>>
     }

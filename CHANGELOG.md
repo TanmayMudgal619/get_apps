@@ -7,6 +7,14 @@
 
 * Updated Gradle version.
 
+
 ## 1.0.1
 
 * Added Open App feature.
+
+## 1.0.2
+
+* Added own native function to open app.
+* Removed URL Launcher.
+* Merged UserApps and AllApps function into one with includeSystemApps parameter.
+

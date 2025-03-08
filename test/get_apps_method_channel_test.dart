@@ -18,10 +18,7 @@ void main() {
     channel.setMockMethodCallHandler(null);
   });
 
-  test('getAllApps', () async {
-    expect(await platform.getAllApps(), []);
-  });
-  test('getUserApps', () async {
-    expect(await platform.getUserApps(), []);
+  test('getApps', () async {
+    expect(await platform.getApps(), []);
   });
 }

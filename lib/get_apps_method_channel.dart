@@ -11,18 +11,20 @@ class MethodChannelGetApps extends GetAppsPlatform {
   final methodChannel = const MethodChannel('get_apps');
 
   @override
-  Future<List<AppInfo>> getUserApps() async {
-    final result = await methodChannel.invokeListMethod('getUserApps');
+  Future<List<AppInfo>> getApps({bool includeSystemApps = false}) async {
+    final List<dynamic> result = await methodChannel.invokeMethod('getApps', {"includeSystemApps": includeSystemApps});
     List<AppInfo> ourApps =
-        (result ?? []).map((e) => AppInfo.fromAndroidData(e)).toList();
+    (result ?? []).map((e) => AppInfo.fromAndroidData(e)).toList();
     return ourApps;
   }
 
   @override
-  Future<List<AppInfo>> getAllApps() async {
-    final result = await methodChannel.invokeListMethod('getAllApps');
-    List<AppInfo> ourApps =
-        (result ?? []).map((e) => AppInfo.fromAndroidData(e)).toList();
-    return ourApps;
+  Future<void> openApp(String packageName) async {
+    try{
+      await methodChannel.invokeMethod('openApp', {"packageName": packageName});
+    }
+    catch (err){
+      throw Exception("Can't open the application: $err");
+    }
   }
 }

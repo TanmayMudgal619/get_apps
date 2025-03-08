@@ -15,6 +15,7 @@ class AppInfo {
     return AppInfo(
         appName: appData["appName"],
         appPackage: appData["appPackage"],
-        appIcon: Uint8List.fromList(appData["appIcon"]));
+        appIcon: Uint8List.fromList(appData["appIcon"])
+    );
   }
 }

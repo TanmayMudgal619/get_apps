@@ -27,7 +27,7 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Plugin example app'),
         ),
         body: FutureBuilder<List<AppInfo>>(
-          future: GetApps().getUserApps(),
+          future: GetApps().getApps(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               final data = snapshot.requireData;
@@ -37,6 +37,9 @@ class _MyAppState extends State<MyApp> {
                   leading: Image.memory(e.appIcon),
                   title: Text(e.appName),
                   subtitle: Text(e.appPackage),
+                  onTap: () {
+                    GetApps().openApp(e.appPackage);
+                  },
                 ))
                     .toList(),
               );

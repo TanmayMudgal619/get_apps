@@ -30,11 +30,20 @@ class GetAppsPlugin: FlutterPlugin, MethodCallHandler {
       getApps = GetApps(context)
   }
 when (call.method) {
-    "getUserApps" -> {
-      result.success(getApps.userApps)
+    "getApps" -> {
+        if (call.argument<Boolean>("includeSystemApps") == false){
+            result.success(getApps.userApps)
+        }
+        else{
+            result.success(getApps.userApps)
+        }
     }
-    "getAllApps" -> {
-        result.success(getApps.allApps)
+    "openApp" -> {
+        var packageName = call.argument<String>("packageName")
+        if (packageName == null || packageName.isEmpty()){
+            throw Exception("Package name can't be null or empty!")
+        }
+        getApps.openApp(packageName)
     }
     else -> {
         result.notImplemented()
