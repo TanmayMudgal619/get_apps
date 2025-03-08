@@ -22,7 +22,7 @@ void main() {
     expect(initialPlatform, isInstanceOf<MethodChannelGetApps>());
   });
 
-  test('getPlatformVersion', () async {
+  test('getAllApps and getUserApps Test', () async {
     GetApps getAppsPlugin = GetApps();
     MockGetAppsPlatform fakePlatform = MockGetAppsPlatform();
     GetAppsPlatform.instance = fakePlatform;

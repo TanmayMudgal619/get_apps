@@ -4,8 +4,13 @@ class AppInfo {
   String appName;
   String appPackage;
   Uint8List appIcon;
-  AppInfo(
-      {required this.appName, required this.appPackage, required this.appIcon});
+
+  AppInfo({
+    required this.appName,
+    required this.appPackage,
+    required this.appIcon
+  });
+
   factory AppInfo.fromAndroidData(dynamic appData) {
     return AppInfo(
         appName: appData["appName"],
