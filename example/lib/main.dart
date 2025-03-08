@@ -34,10 +34,10 @@ class _MyAppState extends State<MyApp> {
               return ListView(
                 children: data
                     .map((e) => ListTile(
-                          leading: Image.memory(e.appIcon),
-                          title: Text(e.appName),
-                          subtitle: Text(e.appPackage),
-                        ))
+                  leading: Image.memory(e.appIcon),
+                  title: Text(e.appName),
+                  subtitle: Text(e.appPackage),
+                ))
                     .toList(),
               );
             }

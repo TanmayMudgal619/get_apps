@@ -1,6 +1,6 @@
 # get_apps_example
 
-Demonstrates how to use the get_apps plugin.
+A new Flutter project.
 
 ## Getting Started
 

@@ -1,7 +1,9 @@
-group 'com.example.get_apps'
 version '1.0-SNAPSHOT'
 
 buildscript {
+    ext {
+        agp_version = '8.8.2'
+    }
     ext.kotlin_version = '1.7.10'
     repositories {
         google()
@@ -9,7 +11,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.2.0'
+        classpath "com.android.tools.build:gradle:$agp_version"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
@@ -25,6 +27,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 android {
+    namespace "com.example.get_apps"
     compileSdkVersion 31
 
     compileOptions {
