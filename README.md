@@ -15,8 +15,9 @@ import 'package:flutter/material.dart';
 import 'package:get_apps/app_info.dart';
 import 'package:get_apps/get_apps.dart';
 
-
-void main() => runApp(const MyApp());
+void main() {
+  runApp(const MyApp());
+}
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -36,20 +37,23 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('All Apps'),
+          title: const Text('Plugin example app'),
         ),
         body: FutureBuilder<List<AppInfo>>(
-          future: GetApps().getUserApps(),
+          future: GetApps().getApps(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               final data = snapshot.requireData;
               return ListView(
                 children: data
                     .map((e) => ListTile(
-                          leading: Image.memory(e.appIcon), // App Icon Uint8List
-                          title: Text(e.appName), // App Name
-                          subtitle: Text(e.appPackage), //App Package Name
-                        ))
+                  leading: Image.memory(e.appIcon),
+                  title: Text(e.appName),
+                  subtitle: Text(e.appPackage),
+                  onTap: () {
+                    GetApps().openApp(e.appPackage);
+                  },
+                ))
                     .toList(),
               );
             }
@@ -67,5 +71,4 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
-
 ```

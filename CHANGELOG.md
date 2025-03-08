@@ -23,3 +23,8 @@
 ## 1.0.3
 
 * Minor issue removed.
+
+
+## 1.0.4
+
+* Updated example.

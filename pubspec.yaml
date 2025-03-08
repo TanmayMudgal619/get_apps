@@ -1,6 +1,6 @@
 name: get_apps
 description: Flutter Plugin to get all installed apps on android.
-version: 1.0.3
+version: 1.0.4
 homepage: https://github.com/TanmayMudgal619/get_apps
 
 environment:
