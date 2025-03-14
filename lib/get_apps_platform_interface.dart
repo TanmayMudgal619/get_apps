@@ -31,4 +31,8 @@ abstract class GetAppsPlatform extends PlatformInterface {
   Future<void> openApp(String packageName) {
     throw UnimplementedError('openApp() has not been implemented.');
   }
+
+  Stream<String> appRemoveReceiver() async*{
+    throw UnimplementedError("appRemoveReceiver() has not been implemented.");
+  }
 }

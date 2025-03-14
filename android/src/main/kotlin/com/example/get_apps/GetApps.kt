@@ -81,6 +81,10 @@ class GetApps internal constructor(ctx: Context) {
         }
     }
 
+    public fun listenRemoveAction(): Sequence<String>{
+
+    }
+
     companion object {
         private lateinit var context: Context
         private lateinit var allApps: MutableList<Map<String, Any>>

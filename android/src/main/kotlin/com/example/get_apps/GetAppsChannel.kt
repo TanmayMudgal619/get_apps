@@ -10,18 +10,18 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 
 /** GetAppsPlugin */
-class GetAppsPlugin: FlutterPlugin, MethodCallHandler {
+class GetAppsChannel: FlutterPlugin, MethodCallHandler {
   /// The MethodChannel that will the communication between Flutter and native Android
   ///
   /// This local reference serves to register the plugin with the Flutter Engine and unregister it
   /// when the Flutter Engine is detached from the Activity
-  private lateinit var channel : MethodChannel
+  private lateinit var methodChannel : MethodChannel
   private lateinit var getApps : GetApps
   private lateinit var context : Context
 
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-    channel = MethodChannel(flutterPluginBinding.binaryMessenger, "get_apps")
-    channel.setMethodCallHandler(this)
+    methodChannel = MethodChannel(flutterPluginBinding.binaryMessenger, "get_apps")
+    methodChannel.setMethodCallHandler(this)
     context = flutterPluginBinding.applicationContext
   }
 
@@ -52,6 +52,6 @@ when (call.method) {
   }
 
   override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
-    channel.setMethodCallHandler(null)
+    methodChannel.setMethodCallHandler(null)
   }
 }

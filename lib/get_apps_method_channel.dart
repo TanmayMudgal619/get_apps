@@ -9,6 +9,7 @@ class MethodChannelGetApps extends GetAppsPlatform {
   /// The method channel used to interact with the native platform.
   @visibleForTesting
   final methodChannel = const MethodChannel('get_apps');
+  final eventChannel = const EventChannel('package_removed_channel');
 
   @override
   Future<List<AppInfo>> getApps({bool includeSystemApps = false}) async {
@@ -25,5 +26,10 @@ class MethodChannelGetApps extends GetAppsPlatform {
     catch (err){
       throw Exception("Can't open the application: $err");
     }
+  }
+  
+  @override
+  Stream<String> appRemoveReceiver() async*{
+    eventChannel.receiveBroadcastStream();
   }
 }
