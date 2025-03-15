@@ -30,6 +30,11 @@ class MethodChannelGetApps extends GetAppsPlatform {
   
   @override
   Stream<String> appRemoveReceiver() async*{
-    eventChannel.receiveBroadcastStream();
+    print("starting listening from Native");
+    eventChannel.receiveBroadcastStream().listen((event){
+      print("got event from native $event");
+    });
   }
+
+
 }

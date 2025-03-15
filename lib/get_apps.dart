@@ -9,4 +9,11 @@ class GetApps {
   Future<void> openApp(String packageName) async{
     return GetAppsPlatform.instance.openApp(packageName);
   }
+
+  Stream<String> appRemoveReceiver() async* {
+    print("starting receiving from getapps");
+    await for (final packageName in GetAppsPlatform.instance.appRemoveReceiver()){
+      yield packageName;
+    }
+  }
 }
