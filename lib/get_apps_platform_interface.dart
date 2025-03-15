@@ -1,7 +1,7 @@
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 import 'get_apps_method_channel.dart';
-import 'app_info.dart';
+import 'models.dart';
 
 abstract class GetAppsPlatform extends PlatformInterface {
   /// Constructs a GetAppsPlatform.
@@ -32,7 +32,7 @@ abstract class GetAppsPlatform extends PlatformInterface {
     throw UnimplementedError('openApp() has not been implemented.');
   }
 
-  Stream<String> appRemoveReceiver() async*{
-    throw UnimplementedError("appRemoveReceiver() has not been implemented.");
+  Stream<ActionNotification> appActionReceiver() async*{
+    throw UnimplementedError("appActionReceiver() has not been implemented.");
   }
 }

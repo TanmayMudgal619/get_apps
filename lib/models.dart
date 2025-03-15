@@ -19,3 +19,20 @@ class AppInfo {
     );
   }
 }
+
+class ActionNotification{
+  String packageName;
+  String action;
+
+  ActionNotification({
+    required this.packageName,
+    required this.action,
+  });
+
+  factory ActionNotification.fromMap(Map<dynamic, dynamic> actionNotification){
+    return ActionNotification(
+        packageName: actionNotification["packageName"]!,
+        action: actionNotification["action"]!
+    );
+  }
+}

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get_apps/app_info.dart';
 import 'package:get_apps/get_apps.dart';
+import 'package:get_apps/models.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,8 +16,8 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   void initState() {
-    GetApps().appRemoveReceiver().forEach((packageName){
-      print(packageName);
+    GetApps().appActionReceiver().forEach((packageAction){
+      print("Action ${packageAction.action} is taken on ${packageAction.packageName}");
     });
     super.initState();
   }

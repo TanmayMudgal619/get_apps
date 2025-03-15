@@ -1,5 +1,5 @@
 import 'get_apps_platform_interface.dart';
-import 'app_info.dart';
+import 'models.dart';
 
 class GetApps {
   Future<List<AppInfo>> getApps({bool includeSystemApps = false}) {
@@ -10,11 +10,9 @@ class GetApps {
     return GetAppsPlatform.instance.openApp(packageName);
   }
 
-  Stream<String> appRemoveReceiver() async* {
-    print("starting receiving from getapps");
-    await for (final packageName in GetAppsPlatform.instance.appRemoveReceiver()){
-      print("yielding package $packageName");
-      yield packageName;
+  Stream<ActionNotification> appActionReceiver() async* {
+    await for (final actionNotification in GetAppsPlatform.instance.appActionReceiver()){
+      yield actionNotification;
     }
   }
 }

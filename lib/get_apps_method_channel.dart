@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 import 'get_apps_platform_interface.dart';
-import 'app_info.dart';
+import 'models.dart';
 
 /// An implementation of [GetAppsPlatform] that uses method channels.
 class MethodChannelGetApps extends GetAppsPlatform {
@@ -29,13 +29,9 @@ class MethodChannelGetApps extends GetAppsPlatform {
   }
   
   @override
-  Stream<String> appRemoveReceiver() async*{
-    print("starting listening from Native");
-    await for (final removeEvent in eventChannel.receiveBroadcastStream()){
-      print("yielding event $removeEvent");
-      yield removeEvent["packageName"];
+  Stream<ActionNotification> appActionReceiver() async*{
+    await for (final actionNotification in eventChannel.receiveBroadcastStream()){
+      yield ActionNotification.fromMap(actionNotification);
     }
   }
-
-
 }
