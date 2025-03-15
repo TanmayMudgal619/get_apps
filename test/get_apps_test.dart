@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_apps/app_info.dart';
 import 'package:get_apps/get_apps.dart';
 import 'package:get_apps/get_apps_platform_interface.dart';
 import 'package:get_apps/get_apps_method_channel.dart';
+import 'package:get_apps/models.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 class MockGetAppsPlatform
@@ -13,6 +13,11 @@ class MockGetAppsPlatform
 
   @override
   Future<void> openApp(String packageName) => Future.value();
+
+  @override
+  Stream<ActionNotification> appActionReceiver() {
+    throw UnimplementedError();
+  }
 }
 
 void main() {

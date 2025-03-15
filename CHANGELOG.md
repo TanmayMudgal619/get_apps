@@ -28,3 +28,8 @@
 ## 1.0.4
 
 * Updated example.
+
+
+## 1.0.5
+
+* Package add or remove notification added.
