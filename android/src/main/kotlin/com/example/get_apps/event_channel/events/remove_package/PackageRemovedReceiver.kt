@@ -1,9 +1,8 @@
-package com.example.get_apps
+package com.example.get_apps.event_channel.events.remove_package
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.EventChannel.EventSink
 

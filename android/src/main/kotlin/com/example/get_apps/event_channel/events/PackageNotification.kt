@@ -1,4 +1,4 @@
-package com.example.get_apps
+package com.example.get_apps.event_channel.events
 
 class PackageNotification {
   private var PackageName: String

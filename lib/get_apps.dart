@@ -13,6 +13,7 @@ class GetApps {
   Stream<String> appRemoveReceiver() async* {
     print("starting receiving from getapps");
     await for (final packageName in GetAppsPlatform.instance.appRemoveReceiver()){
+      print("yielding package $packageName");
       yield packageName;
     }
   }

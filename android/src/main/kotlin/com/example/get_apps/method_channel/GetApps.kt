@@ -1,6 +1,5 @@
-package com.example.get_apps
+package com.example.get_apps.method_channel
 
-import android.R
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
@@ -8,7 +7,6 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import android.util.Base64
 import java.io.ByteArrayOutputStream
 
 

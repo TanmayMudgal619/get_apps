@@ -8,8 +8,8 @@ import 'app_info.dart';
 class MethodChannelGetApps extends GetAppsPlatform {
   /// The method channel used to interact with the native platform.
   @visibleForTesting
-  final methodChannel = const MethodChannel('get_apps');
-  final eventChannel = const EventChannel('package_removed_channel');
+  final methodChannel = const MethodChannel('method_channel');
+  final eventChannel = const EventChannel('event_channel');
 
   @override
   Future<List<AppInfo>> getApps({bool includeSystemApps = false}) async {
@@ -31,9 +31,10 @@ class MethodChannelGetApps extends GetAppsPlatform {
   @override
   Stream<String> appRemoveReceiver() async*{
     print("starting listening from Native");
-    eventChannel.receiveBroadcastStream().listen((event){
-      print("got event from native $event");
-    });
+    await for (final removeEvent in eventChannel.receiveBroadcastStream()){
+      print("yielding event $removeEvent");
+      yield removeEvent["packageName"];
+    }
   }
 
 
