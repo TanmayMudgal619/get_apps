@@ -18,6 +18,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     GetApps().appActionReceiver().forEach((packageAction){
       print("Action ${packageAction.action} is taken on ${packageAction.packageName}");
+      setState(() {});
     });
     super.initState();
   }
@@ -40,6 +41,9 @@ class _MyAppState extends State<MyApp> {
                   leading: Image.memory(e.appIcon),
                   title: Text(e.appName),
                   subtitle: Text(e.appPackage),
+                  onLongPress: () {
+                    GetApps().deleteApp(e.appPackage);
+                  },
                   onTap: () {
                     GetApps().openApp(e.appPackage);
                   },

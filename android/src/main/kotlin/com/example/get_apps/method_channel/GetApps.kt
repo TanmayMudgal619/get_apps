@@ -1,18 +1,24 @@
 package com.example.get_apps.method_channel
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import java.io.ByteArrayOutputStream
 
 
 class GetApps internal constructor(ctx: Context) {
+    private var activity: Activity?
+
     init {
         context = ctx
+        activity = null
         val packageManager = context.packageManager
         Companion.allApps = ArrayList()
         Companion.userApps = ArrayList()
@@ -23,6 +29,10 @@ class GetApps internal constructor(ctx: Context) {
                 Companion.userApps.add(getAppInfo(packageManager, applicationInfo))
             }
         }
+    }
+
+    public fun setActivity(activity: Activity?){
+        this.activity = activity
     }
 
     val userApps: List<Map<String, Any>>
@@ -75,7 +85,21 @@ class GetApps internal constructor(ctx: Context) {
             context.startActivity(launchIntent);
         }
         catch (err: Exception){
-            throw Exception("Can't open the app with error: ${err.toString()}")
+            throw Exception("Can't open the app with error: $err")
+        }
+    }
+
+    public fun deleteApp(packageName: String){
+        if (activity == null){
+            throw Exception("Null Activity")
+        }
+        val deleteIntent = Intent(Intent.ACTION_DELETE)
+        deleteIntent.data = Uri.parse("package:$packageName")
+        try {
+            activity!!.startActivity(deleteIntent)
+        }
+        catch (err: Exception){
+            throw Exception("Can't delete the app with error: $err")
         }
     }
 

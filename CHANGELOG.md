@@ -33,3 +33,8 @@
 ## 1.0.5
 
 * Package add or remove notification added.
+
+
+## 1.0.6
+
+* Uninstall app feature added.

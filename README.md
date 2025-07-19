@@ -12,8 +12,8 @@ To use this plugin, add `get_apps` as a [dependency in your pubspec.yaml file](h
 <?code-excerpt "basic.dart (basic-example)"?>
 ``` dart
 import 'package:flutter/material.dart';
-import 'package:get_apps/app_info.dart';
 import 'package:get_apps/get_apps.dart';
+import 'package:get_apps/models.dart';
 
 void main() {
   runApp(const MyApp());
@@ -29,6 +29,10 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   void initState() {
+    GetApps().appActionReceiver().forEach((packageAction){
+      print("Action ${packageAction.action} is taken on ${packageAction.packageName}");
+      setState(() {});
+    });
     super.initState();
   }
 
@@ -50,6 +54,9 @@ class _MyAppState extends State<MyApp> {
                   leading: Image.memory(e.appIcon),
                   title: Text(e.appName),
                   subtitle: Text(e.appPackage),
+                  onLongPress: () {
+                    GetApps().deleteApp(e.appPackage);
+                  },
                   onTap: () {
                     GetApps().openApp(e.appPackage);
                   },

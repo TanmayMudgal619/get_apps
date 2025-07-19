@@ -27,6 +27,16 @@ class MethodChannelGetApps extends GetAppsPlatform {
       throw Exception("Can't open the application: $err");
     }
   }
+
+  @override
+  Future<void> deleteApp(String packageName) async {
+    try{
+      await methodChannel.invokeMethod('deleteApp', {"packageName": packageName});
+    }
+    catch (err){
+      throw Exception("Can't delete the application: $err");
+    }
+  }
   
   @override
   Stream<ActionNotification> appActionReceiver() async*{

@@ -10,6 +10,10 @@ class GetApps {
     return GetAppsPlatform.instance.openApp(packageName);
   }
 
+  Future<void> deleteApp(String packageName) async{
+    return GetAppsPlatform.instance.deleteApp(packageName);
+  }
+
   Stream<ActionNotification> appActionReceiver() async* {
     await for (final actionNotification in GetAppsPlatform.instance.appActionReceiver()){
       yield actionNotification;
