@@ -3,6 +3,7 @@ package com.example.get_apps.event_channel.events
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import com.example.get_apps.method_channel.GetApps
 import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.EventChannel.EventSink
 
@@ -10,11 +11,12 @@ abstract class PackageActionListerner{
     abstract fun onNotify(packageName: String, action: String, events: EventSink?)
 }
 
-class ActionReceiver : BroadcastReceiver() {
+class ActionReceiver(private var getApps: GetApps) : BroadcastReceiver() {
     private var actionMapping: Map<String, String> = mapOf(
         Intent.ACTION_PACKAGE_REMOVED to "removed",
         Intent.ACTION_PACKAGE_ADDED to "added"
     )
+
     private var events: EventChannel.EventSink? = null
     private lateinit var callback: PackageActionListerner
 
@@ -24,7 +26,15 @@ class ActionReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context?, intent: Intent?) {
         if (intent != null && intent.action in actionMapping){
-            callback.onNotify(intent.data.toString().replaceFirst("package:", ""), actionMapping[intent.action]!!, events)
+            val packageName = intent.data.toString().replaceFirst("package:", "")
+//            As removeAppFromList is not working as expected commented this for now
+//            if (intent.action == Intent.ACTION_PACKAGE_REMOVED){
+//                getApps.removeAppFromList(packageName)
+//            }
+//            if (intent.action == Intent.ACTION_PACKAGE_ADDED){
+                getApps.setApps()
+//            }
+            callback.onNotify(packageName, actionMapping[intent.action]!!, events)
         }
     }
 

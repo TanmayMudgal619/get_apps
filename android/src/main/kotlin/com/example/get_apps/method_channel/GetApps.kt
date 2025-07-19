@@ -1,5 +1,7 @@
 package com.example.get_apps.method_channel
 
+import android.annotation.SuppressLint
+import android.annotation.TargetApi
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -10,6 +12,7 @@ import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.os.Build
 import java.io.ByteArrayOutputStream
 
 
@@ -19,6 +22,10 @@ class GetApps internal constructor(ctx: Context) {
     init {
         context = ctx
         activity = null
+        setApps()
+    }
+
+    fun setApps(){
         val packageManager = context.packageManager
         Companion.allApps = ArrayList()
         Companion.userApps = ArrayList()
@@ -60,7 +67,7 @@ class GetApps internal constructor(ctx: Context) {
                         Bitmap.Config.ARGB_8888
                     )
                 }
-            val canvas: Canvas = Canvas(bitmap)
+            val canvas = Canvas(bitmap)
             tempIcon.setBounds(0, 0, canvas.width, canvas.height)
             tempIcon.draw(canvas)
             val baos = ByteArrayOutputStream()
@@ -103,7 +110,21 @@ class GetApps internal constructor(ctx: Context) {
         }
     }
 
+//    For now as it is not working we're refreshing the app list on add and remove both
+//    will make it work soon
+//    fun removeAppFromList(packageName: String) {
+//        Companion.allApps = Companion.allApps.filter {
+//            it["packageName"].toString() != packageName
+//        } as ArrayList<Map<String, Any>>
+//
+//        Companion.userApps = Companion.userApps.filter {
+//            it["packageName"].toString() != packageName
+//        } as ArrayList<Map<String, Any>>
+//    }
+
+
     companion object {
+        @SuppressLint("StaticFieldLeak")
         private lateinit var context: Context
         private lateinit var allApps: MutableList<Map<String, Any>>
         private lateinit var userApps: MutableList<Map<String, Any>>

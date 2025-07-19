@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import androidx.annotation.NonNull
 import com.example.get_apps.event_channel.EventChannelHandler
+import com.example.get_apps.method_channel.GetApps
 import com.example.get_apps.method_channel.MethodChannelHandler
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
@@ -27,15 +28,19 @@ class GetAppsPlugin: FlutterPlugin, ActivityAware {
   private lateinit var context : Context
   private var activity: Activity? = null
 
+  private lateinit var getApps: GetApps
+
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
     context = flutterPluginBinding.applicationContext
 
+    getApps = GetApps(context)
+
     methodChannel = MethodChannel(flutterPluginBinding.binaryMessenger, "method_channel")
-    methodChannelHandler = MethodChannelHandler(context)
+    methodChannelHandler = MethodChannelHandler(context, getApps)
     methodChannel.setMethodCallHandler(methodChannelHandler)
 
     eventChannel = EventChannel(flutterPluginBinding.binaryMessenger, "event_channel")
-    eventChannelHandler = EventChannelHandler(context)
+    eventChannelHandler = EventChannelHandler(context, getApps)
     eventChannel.setStreamHandler(eventChannelHandler)
   }
 

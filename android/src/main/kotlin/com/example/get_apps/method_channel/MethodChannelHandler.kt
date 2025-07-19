@@ -11,9 +11,9 @@ class MethodChannelHandler: MethodCallHandler {
   private var activity: Activity? = null
   private var getApps : GetApps
 
-  constructor(context: Context){
+  constructor(context: Context, getApps: GetApps){
     this.context = context
-    this.getApps = GetApps(context)
+    this.getApps = getApps
   }
 
   fun setActivity(activity: Activity?){
