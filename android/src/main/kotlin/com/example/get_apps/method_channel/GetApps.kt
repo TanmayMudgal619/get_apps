@@ -122,7 +122,6 @@ class GetApps internal constructor(ctx: Context) {
 //        } as ArrayList<Map<String, Any>>
 //    }
 
-
     companion object {
         @SuppressLint("StaticFieldLeak")
         private lateinit var context: Context
