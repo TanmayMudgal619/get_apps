@@ -38,3 +38,8 @@
 ## 1.0.6
 
 * Uninstall app feature added.
+
+
+## 1.0.7
+
+* Set Min SDK version 16.
