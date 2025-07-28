@@ -43,3 +43,8 @@
 ## 1.0.7
 
 * Set Min SDK version 16.
+
+
+## 1.0.8
+
+* Set Min SDK version 21.
