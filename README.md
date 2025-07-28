@@ -9,6 +9,8 @@ To use this plugin, add `get_apps` as a [dependency in your pubspec.yaml file](h
 
 ### Example
 
+Here is how you can use this package
+
 <?code-excerpt "basic.dart (basic-example)"?>
 ``` dart
 import 'package:flutter/material.dart';
