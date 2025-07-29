@@ -48,3 +48,8 @@
 ## 1.0.8
 
 * Set Min SDK version 21.
+
+
+## 1.0.9
+
+* Optimized the refresh speed in case of removal of any application.
