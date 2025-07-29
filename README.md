@@ -2,6 +2,11 @@
 
 Flutter Plugin to get all installed apps.
 
+## Important Note
+
+For now code is not organized due to some urgency on my side but soon the whole code will be refactored though the APIs will be working the same(most probably).
+For now I'm not very consistent with the way I make change but soon there will a defined way to make changes in this repo.
+
 ## Usage
 
 To use this plugin, add `get_apps` as a [dependency in your pubspec.yaml file](https://pub.dev/packages/get_apps).
