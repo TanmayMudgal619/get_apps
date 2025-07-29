@@ -110,17 +110,15 @@ class GetApps internal constructor(ctx: Context) {
         }
     }
 
-//    For now as it is not working we're refreshing the app list on add and remove both
-//    will make it work soon
-//    fun removeAppFromList(packageName: String) {
-//        Companion.allApps = Companion.allApps.filter {
-//            it["packageName"].toString() != packageName
-//        } as ArrayList<Map<String, Any>>
-//
-//        Companion.userApps = Companion.userApps.filter {
-//            it["packageName"].toString() != packageName
-//        } as ArrayList<Map<String, Any>>
-//    }
+    fun removeAppFromList(packageName: String) {
+        Companion.allApps = Companion.allApps.filter {
+            it["appPackage"].toString() != packageName
+        } as ArrayList<Map<String, Any>>
+
+        Companion.userApps = Companion.userApps.filter {
+            it["appPackage"].toString() != packageName
+        } as ArrayList<Map<String, Any>>
+    }
 
     companion object {
         @SuppressLint("StaticFieldLeak")

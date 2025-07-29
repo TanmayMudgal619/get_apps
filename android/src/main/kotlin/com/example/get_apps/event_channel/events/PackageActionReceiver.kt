@@ -27,13 +27,12 @@ class ActionReceiver(private var getApps: GetApps) : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
         if (intent != null && intent.action in actionMapping){
             val packageName = intent.data.toString().replaceFirst("package:", "")
-//            As removeAppFromList is not working as expected commented this for now
-//            if (intent.action == Intent.ACTION_PACKAGE_REMOVED){
-//                getApps.removeAppFromList(packageName)
-//            }
-//            if (intent.action == Intent.ACTION_PACKAGE_ADDED){
+            if (intent.action == Intent.ACTION_PACKAGE_REMOVED){
+                getApps.removeAppFromList(packageName)
+            }
+            if (intent.action == Intent.ACTION_PACKAGE_ADDED){
                 getApps.setApps()
-//            }
+            }
             callback.onNotify(packageName, actionMapping[intent.action]!!, events)
         }
     }
