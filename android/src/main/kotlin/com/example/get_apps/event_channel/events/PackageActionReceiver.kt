@@ -31,7 +31,7 @@ class ActionReceiver(private var getApps: GetApps) : BroadcastReceiver() {
                 getApps.removeAppFromList(packageName)
             }
             if (intent.action == Intent.ACTION_PACKAGE_ADDED){
-                getApps.setApps()
+                getApps.addAppInList(packageName, null)
             }
             callback.onNotify(packageName, actionMapping[intent.action]!!, events)
         }

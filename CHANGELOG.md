@@ -53,3 +53,8 @@
 ## 1.0.9
 
 * Optimized the refresh speed in case of removal of any application.
+
+
+## 1.0.10
+
+* Optimized the refresh speed in case of addition of any application.

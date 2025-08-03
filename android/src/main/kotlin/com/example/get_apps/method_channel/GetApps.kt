@@ -31,10 +31,7 @@ class GetApps internal constructor(ctx: Context) {
         Companion.userApps = ArrayList()
         val installedApps = packageManager.getInstalledApplications(0)
         for (applicationInfo in installedApps) {
-            Companion.allApps.add(getAppInfo(packageManager, applicationInfo))
-            if (packageManager.getLaunchIntentForPackage(applicationInfo.packageName) != null) {
-                Companion.userApps.add(getAppInfo(packageManager, applicationInfo))
-            }
+            addAppInList(applicationInfo.packageName, applicationInfo)
         }
     }
 
@@ -118,6 +115,15 @@ class GetApps internal constructor(ctx: Context) {
         Companion.userApps = Companion.userApps.filter {
             it["appPackage"].toString() != packageName
         } as ArrayList<Map<String, Any>>
+    }
+
+    fun addAppInList(packageName: String, applicationInfo: ApplicationInfo?) {
+        val packageManager = context.packageManager;
+        val appInfo = applicationInfo ?: packageManager.getApplicationInfo(packageName, 0)
+        Companion.allApps.add(getAppInfo(packageManager, appInfo))
+        if (packageManager.getLaunchIntentForPackage(appInfo.packageName) != null) {
+            Companion.userApps.add(getAppInfo(packageManager, appInfo))
+        }
     }
 
     companion object {
