@@ -18,6 +18,11 @@ class MockGetAppsPlatform
   Stream<ActionNotification> appActionReceiver() {
     throw UnimplementedError();
   }
+
+  @override
+  Future<void> deleteApp(String packageName) {
+    throw UnimplementedError();
+  }
 }
 
 void main() {
