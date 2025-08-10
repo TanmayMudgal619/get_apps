@@ -58,3 +58,9 @@
 ## 1.0.10
 
 * Optimized the refresh speed in case of addition of any application.
+
+
+## 2.0.0
+
+* Static Initializer for the GetApps.
+* All the functional calls are now moved from main thread to secondary threads.

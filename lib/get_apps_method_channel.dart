@@ -12,10 +12,20 @@ class MethodChannelGetApps extends GetAppsPlatform {
   final eventChannel = const EventChannel('event_channel');
 
   @override
+  Future<void> init() async {
+    await methodChannel.invokeMethod('init');
+  }
+
+  @override
   Future<List<AppInfo>> getApps({bool includeSystemApps = false}) async {
-    final List<dynamic> result = await methodChannel.invokeMethod('getApps', {"includeSystemApps": includeSystemApps});
-    List<AppInfo> ourApps = result.map((e) => AppInfo.fromAndroidData(e)).toList();
-    return ourApps;
+    try{
+      final List<dynamic> result = await methodChannel.invokeMethod('getApps', {"includeSystemApps": includeSystemApps});
+      List<AppInfo> ourApps = result.map((e) => AppInfo.fromAndroidData(e)).toList();
+      return ourApps;
+    }
+    catch (err){
+      throw Exception("Can't get the applications: $err");
+    }
   }
 
   @override
@@ -39,9 +49,9 @@ class MethodChannelGetApps extends GetAppsPlatform {
   }
   
   @override
-  Stream<ActionNotification> appActionReceiver() async*{
-    await for (final actionNotification in eventChannel.receiveBroadcastStream()){
-      yield ActionNotification.fromMap(actionNotification);
-    }
+  Stream<ActionNotification> appActionReceiver() {
+    return eventChannel
+        .receiveBroadcastStream()
+        .map((event) => ActionNotification.fromMap(event));
   }
 }

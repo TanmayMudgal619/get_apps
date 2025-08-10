@@ -4,7 +4,7 @@ import android.app.Activity
 import android.content.Context
 import androidx.annotation.NonNull
 import com.example.get_apps.event_channel.EventChannelHandler
-import com.example.get_apps.method_channel.GetApps
+import com.example.get_apps.GetApps
 import com.example.get_apps.method_channel.MethodChannelHandler
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin

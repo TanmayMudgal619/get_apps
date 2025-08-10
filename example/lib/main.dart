@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get_apps/get_apps.dart';
 import 'package:get_apps/models.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -14,11 +15,16 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  late Future<List<AppInfo>> userApps;
+
   @override
   void initState() {
-    GetApps().appActionReceiver().forEach((packageAction){
-      print("Action ${packageAction.action} is taken on ${packageAction.packageName}");
-      setState(() {});
+    userApps = GetApps.init().then((_){
+      GetApps().appActionReceiver().forEach((packageAction){
+        userApps = GetApps().getApps();
+        setState(() {});
+      });
+      return GetApps().getApps();
     });
     super.initState();
   }
@@ -31,7 +37,7 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Plugin example app'),
         ),
         body: FutureBuilder<List<AppInfo>>(
-          future: GetApps().getApps(),
+          future: userApps,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               final data = snapshot.requireData;
