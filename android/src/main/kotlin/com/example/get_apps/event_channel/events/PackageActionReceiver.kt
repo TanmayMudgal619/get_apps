@@ -28,10 +28,10 @@ class ActionReceiver(private var getApps: GetApps) : BroadcastReceiver() {
         if (intent != null && intent.action in actionMapping){
             val packageName = intent.data.toString().replaceFirst("package:", "")
             if (intent.action == Intent.ACTION_PACKAGE_REMOVED){
-                getApps.removeAppFromList(packageName)
+                getApps.removeApp(packageName)
             }
             if (intent.action == Intent.ACTION_PACKAGE_ADDED){
-                getApps.addAppInList(packageName, null)
+                getApps.addApp(packageName)
             }
             callback.onNotify(packageName, actionMapping[intent.action]!!, events)
         }
