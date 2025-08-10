@@ -2,6 +2,9 @@ package com.example.get_apps.method_channel
 
 import android.app.Activity
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
+import com.example.get_apps.GetApps
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
@@ -10,6 +13,7 @@ class MethodChannelHandler: MethodCallHandler {
   private var context: Context
   private var activity: Activity? = null
   private var getApps : GetApps
+
 
   constructor(context: Context, getApps: GetApps){
     this.context = context
@@ -21,36 +25,68 @@ class MethodChannelHandler: MethodCallHandler {
   }
 
   override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
-    when (call.method){
-      "getApps" -> handleGetApps(call, result)
-      "openApp" -> handleOpenApp(call, result)
-      "deleteApp" -> handleDeleteApp(call, result)
-      else -> result.notImplemented()
+    Thread{
+      when(call.method){
+        "init"-> initHandler(result)
+        "getApps"-> getAppsHandler(call, result)
+        "openApp" -> openAppHandler(call, result)
+        "deleteApp" -> deleteAppHandler(call, result)
+        else -> result.notImplemented()
+      }
+    }.start()
+  }
+
+  fun initHandler(result: MethodChannel.Result){
+    this.getApps.initCore()
+    Handler(Looper.getMainLooper()).post {
+      result.success(null)
     }
   }
 
-  fun handleGetApps(call: MethodCall, result: MethodChannel.Result){
-    if (call.argument<Boolean>("includeSystemApps") == false){
-      result.success(getApps.userApps)
+  fun getAppsHandler(call: MethodCall, result: MethodChannel.Result){
+    try{
+      val apps = getApps.getAppsList(call.argument<Boolean?>("includeSystemApps") ?: false)
+      Handler(Looper.getMainLooper()).post {
+        result.success(apps)
+      }
     }
-    else{
-      result.success(getApps.allApps)
+    catch (err: Exception){
+      Handler(Looper.getMainLooper()).post {
+        result.error("GetApps Error", err.toString(), null)
+      }
     }
   }
 
-  fun handleOpenApp(call: MethodCall, result: MethodChannel.Result){
-    var packageName = call.argument<String>("packageName")
-    if (packageName == null || packageName.isEmpty()){
-      throw Exception("Package name can't be null or empty!")
+  fun openAppHandler(call: MethodCall, result: MethodChannel.Result){
+    try{
+      val packageName = call.argument<String?>("packageName")
+      if (packageName == null || packageName.isEmpty()){
+        throw Exception("Package name can't be null or empty!")
+      }
+      getApps.openApp(packageName)
+      Handler(Looper.getMainLooper()).post {
+        result.success(null)
+      }
     }
-    getApps.openApp(packageName)
+    catch (err: Exception){
+      Handler(Looper.getMainLooper()).post {
+        result.error("GetApps Error", err.toString(), null)
+      }
+    }
   }
 
-  fun handleDeleteApp(call: MethodCall, result: MethodChannel.Result){
-    var packageName = call.argument<String>("packageName")
-    if (packageName == null || packageName.isEmpty()){
-      throw Exception("Package name can't be null or empty!")
+  fun deleteAppHandler(call: MethodCall, result: MethodChannel.Result){
+    try{
+      val packageName = call.argument<String?>("packageName")
+      if (packageName == null || packageName.isEmpty()){
+        throw Exception("Package name can't be null or empty!")
+      }
+      getApps.deleteApp(packageName)
     }
-    getApps.deleteApp(packageName)
+    catch (err: Exception){
+      Handler(Looper.getMainLooper()).post {
+        result.error("GetApps Error", err.toString(), null)
+      }
+    }
   }
 }

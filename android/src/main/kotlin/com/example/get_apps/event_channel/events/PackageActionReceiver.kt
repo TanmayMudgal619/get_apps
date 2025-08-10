@@ -3,7 +3,7 @@ package com.example.get_apps.event_channel.events
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import com.example.get_apps.method_channel.GetApps
+import com.example.get_apps.GetApps
 import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.EventChannel.EventSink
 

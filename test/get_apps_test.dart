@@ -23,6 +23,11 @@ class MockGetAppsPlatform
   Future<void> deleteApp(String packageName) {
     throw UnimplementedError();
   }
+
+  @override
+  Future<void> init() {
+    throw UnimplementedError();
+  }
 }
 
 void main() {

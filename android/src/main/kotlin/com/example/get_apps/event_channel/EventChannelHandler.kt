@@ -5,7 +5,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import com.example.get_apps.event_channel.events.ActionReceiver
 import com.example.get_apps.event_channel.events.OnPackageActionNotify
-import com.example.get_apps.method_channel.GetApps
+import com.example.get_apps.GetApps
 import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.EventChannel.StreamHandler
 
@@ -15,7 +15,6 @@ class EventChannelHandler: StreamHandler {
   private var getApps: GetApps
   private var actionReceiver : ActionReceiver
   private var packageIntentFilter: IntentFilter
-
 
   constructor(context: Context, getApps: GetApps){
     this.context = context
@@ -29,6 +28,7 @@ class EventChannelHandler: StreamHandler {
   }
 
   override fun onListen(arguments: Any?, events: EventChannel.EventSink?) {
+    getApps.initCheck()
     actionReceiver.setEventSink(events);
     actionReceiver.setListener(OnPackageActionNotify())
     context.registerReceiver(actionReceiver, packageIntentFilter)
