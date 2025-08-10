@@ -24,10 +24,6 @@ abstract class GetAppsPlatform extends PlatformInterface {
     _instance = instance;
   }
 
-  Future<void> init() {
-    throw UnimplementedError('init() has not been implemented.');
-  }
-
   Future<List<AppInfo>> getApps({bool includeSystemApps = false}) {
     throw UnimplementedError('getApps() has not been implemented.');
   }

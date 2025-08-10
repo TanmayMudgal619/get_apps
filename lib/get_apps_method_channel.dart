@@ -12,11 +12,6 @@ class MethodChannelGetApps extends GetAppsPlatform {
   final eventChannel = const EventChannel('event_channel');
 
   @override
-  Future<void> init() async {
-    await methodChannel.invokeMethod('init');
-  }
-
-  @override
   Future<List<AppInfo>> getApps({bool includeSystemApps = false}) async {
     try{
       final List<dynamic> result = await methodChannel.invokeMethod('getApps', {"includeSystemApps": includeSystemApps});

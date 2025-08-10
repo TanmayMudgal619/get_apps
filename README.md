@@ -8,11 +8,11 @@ For now code is not organized due to some urgency on my side but soon the whole 
 For now I'm not very consistent with the way I make change but soon there will a defined way to make changes in this repo.
 
 ## TODO
-- [ ] Adding a stream method to continously listen all apps rather then fetching them again manually on add/remove events.
 - [ ] Add more details regarding apps, such as their version.
-- [ ] `init` should be called automatically if hasn't been called before, rather than showing an error.
 - [ ] Valid Test Cases.
 - [ ] How about supporting other platforms too?
+- [ ] Adding a stream method to continuously listen all apps rather then fetching them again manually on add/remove events.
+- [x] `init` should be called automatically if hasn't been called before, rather than showing an error.
 
 ## Usage
 
@@ -46,12 +46,10 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    userApps = GetApps.init().then((_){
-      GetApps().appActionReceiver().forEach((packageAction){
-        userApps = GetApps().getApps();
-        setState(() {});
-      });
-      return GetApps().getApps();
+    userApps = GetApps().getApps();
+    GetApps().appActionReceiver().forEach((packageAction){
+      userApps = GetApps().getApps();
+      setState(() {});
     });
     super.initState();
   }

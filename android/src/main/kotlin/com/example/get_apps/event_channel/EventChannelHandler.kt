@@ -3,6 +3,8 @@ package com.example.get_apps.event_channel
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.os.Handler
+import android.os.Looper
 import com.example.get_apps.event_channel.events.ActionReceiver
 import com.example.get_apps.event_channel.events.OnPackageActionNotify
 import com.example.get_apps.GetApps
@@ -28,10 +30,14 @@ class EventChannelHandler: StreamHandler {
   }
 
   override fun onListen(arguments: Any?, events: EventChannel.EventSink?) {
-    getApps.initCheck()
-    actionReceiver.setEventSink(events);
-    actionReceiver.setListener(OnPackageActionNotify())
-    context.registerReceiver(actionReceiver, packageIntentFilter)
+    Thread{
+      getApps.initCheck()
+      Handler(Looper.getMainLooper()).post {
+        actionReceiver.setEventSink(events);
+        actionReceiver.setListener(OnPackageActionNotify())
+        context.registerReceiver(actionReceiver, packageIntentFilter)
+      }
+    }.start()
   }
 
   override fun onCancel(arguments: Any?) {
