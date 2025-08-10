@@ -32,7 +32,6 @@ class GetApps internal constructor(ctx: Context) {
                 return
             }
 
-            isInitialized = true
             Log.d("GetApps", "initCore: initializing get apps...")
             val packageManager = context.packageManager
             systemApps = ArrayList()
@@ -41,6 +40,7 @@ class GetApps internal constructor(ctx: Context) {
             for (applicationInfo in installedApps) {
                 addAppInList(applicationInfo.packageName, applicationInfo)
             }
+            isInitialized = true
 
         }
     }
@@ -92,8 +92,17 @@ class GetApps internal constructor(ctx: Context) {
         this.activity = activity
     }
 
-    fun removeAppFromList(packageName: String) {
+    fun removeApp(packageName: String){
         initCheck()
+        removeAppFromList(packageName)
+    }
+
+    fun addApp(packageName: String){
+        initCheck()
+        addAppInList(packageName, null)
+    }
+
+    private fun removeAppFromList(packageName: String) {
         systemApps = systemApps.filter {
             it["appPackage"].toString() != packageName
         } as ArrayList<Map<String, Any>>
@@ -103,8 +112,7 @@ class GetApps internal constructor(ctx: Context) {
         } as ArrayList<Map<String, Any>>
     }
 
-    fun addAppInList(packageName: String, applicationInfo: ApplicationInfo?) {
-        initCheck()
+    private fun addAppInList(packageName: String, applicationInfo: ApplicationInfo?) {
         val packageManager = context.packageManager;
         val appInfo = applicationInfo ?: packageManager.getApplicationInfo(packageName, 0)
         if (packageManager.getLaunchIntentForPackage(appInfo.packageName) != null) {
@@ -114,6 +122,7 @@ class GetApps internal constructor(ctx: Context) {
             systemApps.add(getAppInfo(packageManager, appInfo))
         }
     }
+
 
     private fun getAppInfo(packageManager: PackageManager?, applicationInfo: ApplicationInfo): Map<String, Any> {
         val drawable = applicationInfo.loadIcon(packageManager)

@@ -64,3 +64,8 @@
 
 * Static Initializer for the GetApps.
 * All the functional calls are now moved from main thread to secondary threads.
+
+
+## 2.0.1
+
+* Removed Race condition for initialization and other method calls.
