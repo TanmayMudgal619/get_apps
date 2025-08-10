@@ -19,12 +19,10 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    userApps = GetApps.init().then((_){
-      GetApps().appActionReceiver().forEach((packageAction){
-        userApps = GetApps().getApps();
-        setState(() {});
-      });
-      return GetApps().getApps();
+    userApps = GetApps().getApps();
+    GetApps().appActionReceiver().forEach((packageAction){
+      userApps = GetApps().getApps();
+      setState(() {});
     });
     super.initState();
   }

@@ -3,10 +3,6 @@ import 'models.dart';
 
 class GetApps {
 
-  static Future<void> init(){
-    return GetAppsPlatform.instance.init();
-  }
-
   Future<List<AppInfo>> getApps({bool includeSystemApps = false}) {
     return GetAppsPlatform.instance.getApps(includeSystemApps: includeSystemApps);
   }

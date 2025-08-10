@@ -69,3 +69,9 @@
 ## 2.0.1
 
 * Removed Race condition for initialization and other method calls.
+
+
+## 3.0.0
+
+* Removed `init` method as wasn't much useful, now any call to native code will trigger
+  initialization if not done already.

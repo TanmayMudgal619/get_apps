@@ -41,7 +41,6 @@ class GetApps internal constructor(ctx: Context) {
                 addAppInList(applicationInfo.packageName, applicationInfo)
             }
             isInitialized = true
-
         }
     }
 
@@ -84,7 +83,7 @@ class GetApps internal constructor(ctx: Context) {
 
     fun initCheck(){
         if (!isInitialized){
-            throw Exception("Get Apps is not initialized!")
+            initCore()
         }
     }
 

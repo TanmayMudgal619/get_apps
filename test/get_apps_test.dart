@@ -24,10 +24,6 @@ class MockGetAppsPlatform
     throw UnimplementedError();
   }
 
-  @override
-  Future<void> init() {
-    throw UnimplementedError();
-  }
 }
 
 void main() {

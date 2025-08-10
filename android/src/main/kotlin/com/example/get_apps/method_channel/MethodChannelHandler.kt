@@ -27,20 +27,12 @@ class MethodChannelHandler: MethodCallHandler {
   override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
     Thread{
       when(call.method){
-        "init"-> initHandler(result)
         "getApps"-> getAppsHandler(call, result)
         "openApp" -> openAppHandler(call, result)
         "deleteApp" -> deleteAppHandler(call, result)
         else -> result.notImplemented()
       }
     }.start()
-  }
-
-  fun initHandler(result: MethodChannel.Result){
-    this.getApps.initCore()
-    Handler(Looper.getMainLooper()).post {
-      result.success(null)
-    }
   }
 
   fun getAppsHandler(call: MethodCall, result: MethodChannel.Result){
