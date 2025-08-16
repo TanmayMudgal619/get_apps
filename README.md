@@ -8,10 +8,11 @@ For now code is not organized due to some urgency on my side but soon the whole 
 For now I'm not very consistent with the way I make change but soon there will a defined way to make changes in this repo.
 
 ## TODO
-- [ ] Add more details regarding apps, such as their version.
+- [ ] Add comments to make the documentation better.
 - [ ] Valid Test Cases.
 - [ ] How about supporting other platforms too?
 - [ ] Adding a stream method to continuously listen all apps rather then fetching them again manually on add/remove events.
+- [x] Add more details regarding apps, such as their version.
 - [x] `init` should be called automatically if hasn't been called before, rather than showing an error.
 
 ## Usage
@@ -29,7 +30,7 @@ import 'package:flutter/material.dart';
 import 'package:get_apps/get_apps.dart';
 import 'package:get_apps/models.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
@@ -46,8 +47,16 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
+    GetApps()
+        .getAppInfo("com.android.chrome", shouldInitialize: false)
+        .then((appInfo) {
+          print("Chrome is installed on your device");
+        })
+        .onError((e, s) {
+          print("Chrome is not installed on your device $e");
+        });
     userApps = GetApps().getApps();
-    GetApps().appActionReceiver().forEach((packageAction){
+    GetApps().appActionReceiver().forEach((packageAction) {
       userApps = GetApps().getApps();
       setState(() {});
     });
@@ -58,38 +67,54 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Plugin example app'),
-        ),
+        appBar: AppBar(title: const Text('Plugin example app')),
         body: FutureBuilder<List<AppInfo>>(
           future: userApps,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               final data = snapshot.requireData;
               return ListView(
-                children: data
-                    .map((e) => ListTile(
-                  leading: Image.memory(e.appIcon),
-                  title: Text(e.appName),
-                  subtitle: Text(e.appPackage),
-                  onLongPress: () {
-                    GetApps().deleteApp(e.appPackage);
-                  },
-                  onTap: () {
-                    GetApps().openApp(e.appPackage);
-                  },
-                ))
-                    .toList(),
+                children:
+                    data
+                        .map(
+                          (e) => ListTile(
+                            leading: Image.memory(e.appIcon),
+                            title: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "AppName: ${e.appName}",
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                Text(
+                                  "PackageName: ${e.appPackage}",
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                Text(
+                                  "Version: v${e.versionName}",
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
+                            subtitle: Text(e.description ?? ""),
+                            onLongPress: () {
+                              GetApps().getAppInfo(e.appPackage);
+                            },
+                            onTap: () {
+                              GetApps().openApp(e.appPackage);
+                            },
+                          ),
+                        )
+                        .toList(),
               );
             }
             if (snapshot.hasError) {
-              return Center(
-                child: Text(snapshot.error.toString()),
-              );
+              return Center(child: Text(snapshot.error.toString()));
             }
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const Center(child: CircularProgressIndicator());
           },
         ),
       ),

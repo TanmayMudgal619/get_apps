@@ -27,12 +27,31 @@ class MethodChannelHandler: MethodCallHandler {
   override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
     Thread{
       when(call.method){
+        "getAppInfo"-> getAppInfoHandler(call, result)
         "getApps"-> getAppsHandler(call, result)
         "openApp" -> openAppHandler(call, result)
         "deleteApp" -> deleteAppHandler(call, result)
         else -> result.notImplemented()
       }
     }.start()
+  }
+
+  fun getAppInfoHandler(call: MethodCall, result: MethodChannel.Result){
+    try{
+      val packageName = call.argument<String?>("packageName")
+      if (packageName == null || packageName.isEmpty()){
+        throw Exception("Package name can't be null or empty!")
+      }
+      val appInfo = getApps.getAppInfo(packageName, call.argument<Boolean?>("shouldInitialize") ?: false)
+      Handler(Looper.getMainLooper()).post {
+        result.success(appInfo)
+      }
+    }
+    catch (err: Exception){
+      Handler(Looper.getMainLooper()).post {
+        result.error("GetAppInfo Error", err.toString(), null)
+      }
+    }
   }
 
   fun getAppsHandler(call: MethodCall, result: MethodChannel.Result){
