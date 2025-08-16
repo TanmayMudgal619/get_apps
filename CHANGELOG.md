@@ -75,3 +75,9 @@
 
 * Removed `init` method as wasn't much useful, now any call to native code will trigger
   initialization if not done already.
+
+
+## 3.0.1
+
+* Added `getAppInfo` to fetch data of one app.
+* Added `versionName`, `versionCode`, `description` and `isSystemApp` fields in `AppInfo`.

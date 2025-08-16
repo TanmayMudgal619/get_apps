@@ -1,6 +1,6 @@
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
-import 'get_apps_method_channel.dart';
+import 'get_apps_channel.dart';
 import 'models.dart';
 
 abstract class GetAppsPlatform extends PlatformInterface {
@@ -9,11 +9,11 @@ abstract class GetAppsPlatform extends PlatformInterface {
 
   static final Object _token = Object();
 
-  static GetAppsPlatform _instance = MethodChannelGetApps();
+  static GetAppsPlatform _instance = ChannelGetApps();
 
   /// The default instance of [GetAppsPlatform] to use.
   ///
-  /// Defaults to [MethodChannelGetApps].
+  /// Defaults to [ChannelGetApps].
   static GetAppsPlatform get instance => _instance;
 
   /// Platform-specific implementations should set this with their own
@@ -22,6 +22,13 @@ abstract class GetAppsPlatform extends PlatformInterface {
   static set instance(GetAppsPlatform instance) {
     PlatformInterface.verifyToken(instance, _token);
     _instance = instance;
+  }
+
+  Future<AppInfo> getAppInfo(
+    String packageName, {
+    bool shouldInitialize = false,
+  }) {
+    throw UnimplementedError('getAppInfo() has not been implemented.');
   }
 
   Future<List<AppInfo>> getApps({bool includeSystemApps = false}) {
@@ -36,7 +43,7 @@ abstract class GetAppsPlatform extends PlatformInterface {
     throw UnimplementedError('deleteApp() has not been implemented.');
   }
 
-  Stream<ActionNotification> appActionReceiver() async*{
+  Stream<ActionNotification> appActionReceiver() async* {
     throw UnimplementedError("appActionReceiver() has not been implemented.");
   }
 }

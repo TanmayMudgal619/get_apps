@@ -1,6 +1,5 @@
 package com.example.get_apps
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -12,13 +11,12 @@ import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.util.Log
 import java.io.ByteArrayOutputStream
-import kotlin.text.get
 
 class GetApps internal constructor(ctx: Context) {
     private var activity: Activity?
     private var context: Context = ctx
-    private lateinit var systemApps: MutableList<Map<String, Any>>
-    private lateinit var userApps: MutableList<Map<String, Any>>
+    private lateinit var systemApps: MutableList<Map<String, Any?>>
+    private lateinit var userApps: MutableList<Map<String, Any?>>
     var isInitialized: Boolean = false
 
     init {
@@ -44,7 +42,27 @@ class GetApps internal constructor(ctx: Context) {
         }
     }
 
-    fun getAppsList(includeSystemApps: Boolean): List<Map<String, Any>> {
+    fun getAppInfo(packageName: String, shouldInitialize: Boolean): Map<String, Any?>{
+        if (initCheck(shouldInitialize)){
+            val appInfo = getAppsList(true).firstOrNull {
+                it["packageName"] == packageName
+            }
+            if (appInfo == null){
+                throw Exception("Package Name $packageName not found!")
+            }
+            return appInfo
+        }
+        try{
+            return getAppInfoMap(
+                context.packageManager,
+                context.packageManager.getApplicationInfo(packageName, 0))
+        }
+        catch (_: PackageManager.NameNotFoundException){
+            throw Exception("Package Name $packageName not found!")
+        }
+    }
+
+    fun getAppsList(includeSystemApps: Boolean): List<Map<String, Any?>> {
         initCheck()
         if (includeSystemApps){
             return systemApps + userApps
@@ -81,10 +99,11 @@ class GetApps internal constructor(ctx: Context) {
         }
     }
 
-    fun initCheck(){
-        if (!isInitialized){
+    fun initCheck(shouldInitialize: Boolean = true): Boolean {
+        if (!isInitialized && shouldInitialize){
             initCore()
         }
+        return isInitialized
     }
 
     fun setActivity(activity: Activity?){
@@ -103,28 +122,33 @@ class GetApps internal constructor(ctx: Context) {
 
     private fun removeAppFromList(packageName: String) {
         systemApps = systemApps.filter {
-            it["appPackage"].toString() != packageName
-        } as ArrayList<Map<String, Any>>
+            it["packageName"].toString() != packageName
+        } as ArrayList<Map<String, Any?>>
 
         userApps = userApps.filter {
-            it["appPackage"].toString() != packageName
-        } as ArrayList<Map<String, Any>>
+            it["packageName"].toString() != packageName
+        } as ArrayList<Map<String, Any?>>
     }
 
     private fun addAppInList(packageName: String, applicationInfo: ApplicationInfo?) {
         val packageManager = context.packageManager;
         val appInfo = applicationInfo ?: packageManager.getApplicationInfo(packageName, 0)
-        if (packageManager.getLaunchIntentForPackage(appInfo.packageName) != null) {
-            userApps.add(getAppInfo(packageManager, appInfo))
+
+        val appDataMap = getAppInfoMap(packageManager, appInfo)
+        if (appDataMap["isSystemApp"] as Boolean){
+            systemApps.add(appDataMap)
         }
         else{
-            systemApps.add(getAppInfo(packageManager, appInfo))
+            userApps.add(appDataMap)
         }
     }
 
 
-    private fun getAppInfo(packageManager: PackageManager?, applicationInfo: ApplicationInfo): Map<String, Any> {
+    private fun getAppInfoMap(packageManager: PackageManager, applicationInfo: ApplicationInfo): Map<String, Any?> {
         val drawable = applicationInfo.loadIcon(packageManager)
+        val description = applicationInfo.loadDescription(packageManager)
+        val packageInfo = packageManager.getPackageInfo(applicationInfo.packageName, 0)
+        val isSystemApp = packageManager.getLaunchIntentForPackage(applicationInfo.packageName) == null
         val iconBytes: ByteArray = when (drawable) {
             is BitmapDrawable -> {
                 ByteArrayOutputStream().apply {
@@ -149,9 +173,13 @@ class GetApps internal constructor(ctx: Context) {
         }
 
         return mapOf(
-            "appName" to applicationInfo.loadLabel(packageManager!!).toString(),
-            "appPackage" to applicationInfo.packageName,
-            "appIcon" to iconBytes
+            "appName" to applicationInfo.loadLabel(packageManager).toString(),
+            "packageName" to applicationInfo.packageName,
+            "icon" to iconBytes,
+            "description" to description,
+            "versionName" to packageInfo.versionName,
+            "versionCode" to packageInfo.versionCode,
+            "isSystemApp" to isSystemApp
         )
     }
 }
