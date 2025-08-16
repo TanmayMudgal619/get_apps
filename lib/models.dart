@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+/// [AppInfo] is the model for app data.
 class AppInfo {
   String appName;
   String appPackage;
@@ -32,6 +33,8 @@ class AppInfo {
   }
 }
 
+/// [ActionNotification] is the model for notifications received from android
+/// for add/remove of package.
 class ActionNotification {
   String packageName;
   String action;

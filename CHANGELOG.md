@@ -77,7 +77,12 @@
   initialization if not done already.
 
 
-## 3.0.1
+## 3.1.0
 
 * Added `getAppInfo` to fetch data of one app.
 * Added `versionName`, `versionCode`, `description` and `isSystemApp` fields in `AppInfo`.
+
+
+## 3.1.1
+
+* Added comments for better documentation.

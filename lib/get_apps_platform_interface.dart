@@ -9,11 +9,11 @@ abstract class GetAppsPlatform extends PlatformInterface {
 
   static final Object _token = Object();
 
-  static GetAppsPlatform _instance = ChannelGetApps();
+  static GetAppsPlatform _instance = GetAppsChannel();
 
   /// The default instance of [GetAppsPlatform] to use.
   ///
-  /// Defaults to [ChannelGetApps].
+  /// Defaults to [GetAppsChannel].
   static GetAppsPlatform get instance => _instance;
 
   /// Platform-specific implementations should set this with their own
