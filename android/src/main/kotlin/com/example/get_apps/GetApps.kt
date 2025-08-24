@@ -1,6 +1,7 @@
 package com.example.get_apps
 
 import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
@@ -11,7 +12,10 @@ import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.util.Log
 import java.io.ByteArrayOutputStream
+import java.io.File
+import kotlin.jvm.Throws
 
+@Suppress("DEPRECATION")
 class GetApps internal constructor(ctx: Context) {
     private var activity: Activity?
     private var context: Context = ctx
@@ -99,6 +103,42 @@ class GetApps internal constructor(ctx: Context) {
         }
     }
 
+    fun shareAppByPackageName(packageName: String){
+        initCheck()
+        val appInfo = getAppsList(true).firstOrNull {
+            it["packageName"] == packageName
+        }
+        if (appInfo == null){
+            throw Exception("Package Name $packageName not found!")
+        }
+        if (appInfo["sourceDir"] == null){
+            throw Exception("Can't locate sourceDir for $packageName!")
+        }
+        val shareIntent = Intent().apply {
+            action = Intent.ACTION_SEND
+            type= "*/*"
+        }
+        try {
+            val sourceApkFile = File(appInfo["sourceDir"] as String)
+
+            val destFile = File(context.externalCacheDir, "${appInfo["packageName"]}.apk")
+            sourceApkFile.copyTo(destFile, overwrite = true)
+
+            val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                type = "application/octet-stream"
+                putExtra(Intent.EXTRA_STREAM, destFile.toURI().toString())
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+
+            context.startActivity(shareIntent)
+
+        }
+        catch (err: Exception){
+            throw Exception("Can't share the package $packageName ${appInfo["sourceDir"]} $err!")
+        }
+    }
+
     fun initCheck(shouldInitialize: Boolean = true): Boolean {
         if (!isInitialized && shouldInitialize){
             initCore()
@@ -174,12 +214,13 @@ class GetApps internal constructor(ctx: Context) {
 
         return mapOf(
             "appName" to applicationInfo.loadLabel(packageManager).toString(),
-            "packageName" to applicationInfo.packageName,
-            "icon" to iconBytes,
             "description" to description,
-            "versionName" to packageInfo.versionName,
+            "icon" to iconBytes,
+            "isSystemApp" to isSystemApp,
+            "packageName" to applicationInfo.packageName,
             "versionCode" to packageInfo.versionCode,
-            "isSystemApp" to isSystemApp
+            "versionName" to packageInfo.versionName,
+            "sourceDir" to applicationInfo.sourceDir,
         )
     }
 }

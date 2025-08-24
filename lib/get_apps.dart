@@ -43,6 +43,12 @@ class GetApps {
     return GetAppsPlatform.instance.deleteApp(packageName);
   }
 
+  /// Starts the sharing process for an app if exists using packageName.
+  /// Throws an error if packageName doesn't exists or can't share the application.
+  Future<void> shareApp(String packageName) async {
+    return GetAppsPlatform.instance.shareApp(packageName);
+  }
+
   /// Steams add/remove package notification provided by android.
   Stream<ActionNotification> appActionReceiver() async* {
     await for (final actionNotification

@@ -27,10 +27,11 @@ class MethodChannelHandler: MethodCallHandler {
   override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
     Thread{
       when(call.method){
+        "deleteApp" -> deleteAppHandler(call, result)
         "getAppInfo"-> getAppInfoHandler(call, result)
         "getApps"-> getAppsHandler(call, result)
         "openApp" -> openAppHandler(call, result)
-        "deleteApp" -> deleteAppHandler(call, result)
+        "shareApp" -> shareAppHandler(call, result)
         else -> result.notImplemented()
       }
     }.start()
@@ -75,6 +76,24 @@ class MethodChannelHandler: MethodCallHandler {
         throw Exception("Package name can't be null or empty!")
       }
       getApps.openApp(packageName)
+      Handler(Looper.getMainLooper()).post {
+        result.success(null)
+      }
+    }
+    catch (err: Exception){
+      Handler(Looper.getMainLooper()).post {
+        result.error("GetApps Error", err.toString(), null)
+      }
+    }
+  }
+
+  fun shareAppHandler(call: MethodCall, result: MethodChannel.Result){
+    try{
+      val packageName = call.argument<String?>("packageName")
+      if (packageName == null || packageName.isEmpty()){
+        throw Exception("Package name can't be null or empty!")
+      }
+      getApps.shareAppByPackageName(packageName)
       Handler(Looper.getMainLooper()).post {
         result.success(null)
       }

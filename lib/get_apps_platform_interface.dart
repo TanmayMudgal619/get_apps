@@ -43,6 +43,10 @@ abstract class GetAppsPlatform extends PlatformInterface {
     throw UnimplementedError('deleteApp() has not been implemented.');
   }
 
+  Future<void> shareApp(String packageName) {
+    throw UnimplementedError('deleteApp() has not been implemented.');
+  }
+
   Stream<ActionNotification> appActionReceiver() async* {
     throw UnimplementedError("appActionReceiver() has not been implemented.");
   }

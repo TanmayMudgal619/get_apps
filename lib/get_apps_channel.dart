@@ -61,6 +61,17 @@ class GetAppsChannel extends GetAppsPlatform {
   }
 
   @override
+  Future<void> shareApp(String packageName) async {
+    try {
+      await methodChannel.invokeMethod('shareApp', {
+        "packageName": packageName,
+      });
+    } catch (err) {
+      throw Exception("Can't share the application: $err");
+    }
+  }
+
+  @override
   Stream<ActionNotification> appActionReceiver() {
     return eventChannel.receiveBroadcastStream().map(
           (event) => ActionNotification.fromMap(event),

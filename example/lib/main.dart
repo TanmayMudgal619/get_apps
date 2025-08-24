@@ -73,7 +73,15 @@ class _MyAppState extends State<MyApp> {
                             ),
                             subtitle: Text(e.description ?? ""),
                             onLongPress: () {
-                              GetApps().getAppInfo(e.appPackage);
+                              try{
+                                GetApps().shareApp(e.appPackage).onError((er, s){
+                                  showAboutDialog(context: context, children: [Text(s.toString()), Text(er.toString())]);
+                                });
+                              }
+                              catch (err){
+                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(err.toString())));
+                                showAboutDialog(context: context, children: [Text(err.toString())]);
+                              }
                             },
                             onTap: () {
                               GetApps().openApp(e.appPackage);
