@@ -2,6 +2,10 @@
 
 Flutter Plugin to get all installed apps.
 
+<h3 align="center" style="color:red;">
+🚧 This repository is currently inactive. I will resume work on it later. 🚧
+</h3>
+
 ## Important Note
 
 For now code is not organized due to some urgency on my side but soon the whole code will be refactored though the APIs will be working the same(most probably).
