@@ -1,10 +1,12 @@
+![Status](https://img.shields.io/badge/status-inactive-red?style=for-the-badge)
+<h3 align="center" style="color:red;">
+🚧 This repository is currently inactive. I will resume work on it later. 🚧
+</h3>
+
 # get_apps
 
 Flutter Plugin to get all installed apps.
 
-<h3 align="center" style="color:red;">
-🚧 This repository is currently inactive. I will resume work on it later. 🚧
-</h3>
 
 ## Important Note
 
