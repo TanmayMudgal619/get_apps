@@ -180,7 +180,7 @@ class GetApps internal constructor(ctx: Context) {
         val drawable = applicationInfo.loadIcon(packageManager)
         val description = applicationInfo.loadDescription(packageManager)
         val packageInfo = packageManager.getPackageInfo(applicationInfo.packageName, 0)
-        val isLaunchable = packageManager.getLaunchIntentForPackage(applicationInfo.packageName) == null
+        val isLaunchable = packageManager.getLaunchIntentForPackage(applicationInfo.packageName) != null
         val isSystemApp = (applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM != 0) ||
                 (applicationInfo.flags and ApplicationInfo.FLAG_UPDATED_SYSTEM_APP != 0)
         val iconBytes: ByteArray = when (drawable) {
