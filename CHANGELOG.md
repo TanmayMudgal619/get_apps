@@ -86,3 +86,8 @@
 ## 3.1.1
 
 * Added comments for better documentation.
+
+
+## 3.1.2
+
+* Renamed the field `isSystemApp` to `isLaunchable`.
