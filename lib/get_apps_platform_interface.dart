@@ -31,7 +31,7 @@ abstract class GetAppsPlatform extends PlatformInterface {
     throw UnimplementedError('getAppInfo() has not been implemented.');
   }
 
-  Future<List<AppInfo>> getApps({bool includeSystemApps = false}) {
+  Future<List<AppInfo>> getApps({AppType appType = AppType.all, LaunchType launchType = LaunchType.all}) {
     throw UnimplementedError('getApps() has not been implemented.');
   }
 

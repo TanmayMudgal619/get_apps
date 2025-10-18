@@ -25,9 +25,10 @@ class GetApps {
 
   /// Fetch all the apps on the device.
   /// includeSystemApps is an optional parameter with default value as false.
-  Future<List<AppInfo>> getApps({bool includeSystemApps = false}) {
+  Future<List<AppInfo>> getApps({AppType appType = AppType.all, LaunchType launchType = LaunchType.all}) {
     return GetAppsPlatform.instance.getApps(
-      includeSystemApps: includeSystemApps,
+      appType: appType,
+      launchType: launchType
     );
   }
 

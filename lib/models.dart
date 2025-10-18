@@ -7,6 +7,7 @@ class AppInfo {
   Uint8List appIcon;
   String? description;
   bool isLaunchable;
+  bool isSystemApp;
   int versionCode;
   String? versionName;
 
@@ -16,6 +17,7 @@ class AppInfo {
     required this.appIcon,
     required this.description,
     required this.isLaunchable,
+    required this.isSystemApp,
     required this.versionCode,
     required this.versionName,
   });
@@ -27,6 +29,7 @@ class AppInfo {
       appIcon: Uint8List.fromList(appData["icon"]),
       description: appData["description"],
       isLaunchable: appData["isLaunchable"],
+      isSystemApp: appData["isSystemApp"],
       versionCode: appData["versionCode"],
       versionName: appData["versionName"],
     );
@@ -47,4 +50,13 @@ class ActionNotification {
       action: actionNotification["action"]!,
     );
   }
+}
+
+
+enum AppType{
+  all, system, user
+}
+
+enum LaunchType{
+  all, launchable, nonLaunchable
 }

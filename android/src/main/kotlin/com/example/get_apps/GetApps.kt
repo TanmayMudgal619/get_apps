@@ -12,7 +12,35 @@ import android.net.Uri
 import android.util.Log
 import java.io.ByteArrayOutputStream
 
+enum class AppType(val value: Int) {
+    ALL(0),
+    SYSTEM(1),
+    USER(2);
+
+    companion object {
+        fun fromValue(value: Int): AppType {
+            return values().find { it.value == value }
+                ?: throw IllegalArgumentException("Invalid AppType value: $value")
+        }
+    }
+}
+
+enum class LaunchType(val value: Int) {
+    ALL(0),
+    LAUNCHABLE(1),
+    NON_LAUNCHABLE(2);
+
+    companion object {
+        fun fromValue(value: Int): LaunchType {
+            return values().find { it.value == value }
+                ?: throw IllegalArgumentException("Invalid LaunchType value: $value")
+        }
+    }
+}
+
+
 class GetApps internal constructor(ctx: Context) {
+
     private var activity: Activity?
     private var context: Context = ctx
     private lateinit var systemApps: MutableList<Map<String, Any?>>
@@ -22,7 +50,6 @@ class GetApps internal constructor(ctx: Context) {
     init {
         activity = null
     }
-
     fun initCore(){
         synchronized(this){
             if (isInitialized){
@@ -44,7 +71,7 @@ class GetApps internal constructor(ctx: Context) {
 
     fun getAppInfo(packageName: String, shouldInitialize: Boolean): Map<String, Any?>{
         if (initCheck(shouldInitialize)){
-            val appInfo = getAppsList(true).firstOrNull {
+            val appInfo = getAppsList(AppType.ALL, LaunchType.ALL).firstOrNull {
                 it["packageName"] == packageName
             }
             if (appInfo == null){
@@ -62,13 +89,25 @@ class GetApps internal constructor(ctx: Context) {
         }
     }
 
-    fun getAppsList(includeSystemApps: Boolean): List<Map<String, Any?>> {
+    fun getAppsList(
+        appType: AppType = AppType.ALL,
+        launchType: LaunchType = LaunchType.ALL
+    ): List<Map<String, Any?>> {
         initCheck()
-        if (includeSystemApps){
-            return systemApps + userApps
+
+        val result = when (appType) {
+            AppType.ALL -> systemApps + userApps
+            AppType.SYSTEM -> systemApps
+            AppType.USER -> userApps
         }
-        return userApps
+
+        return if (launchType == LaunchType.ALL) {
+            result
+        } else {
+            result.filter { it["isLaunchable"] == (launchType == LaunchType.LAUNCHABLE) }
+        }
     }
+
 
     fun openApp(packageName: String){
         initCheck()
@@ -135,7 +174,7 @@ class GetApps internal constructor(ctx: Context) {
         val appInfo = applicationInfo ?: packageManager.getApplicationInfo(packageName, 0)
 
         val appDataMap = getAppInfoMap(packageManager, appInfo)
-        if (appDataMap["isLaunchable"] as Boolean){
+        if (appDataMap["isSystemApp"] as Boolean){
             systemApps.add(appDataMap)
         }
         else{
@@ -149,6 +188,8 @@ class GetApps internal constructor(ctx: Context) {
         val description = applicationInfo.loadDescription(packageManager)
         val packageInfo = packageManager.getPackageInfo(applicationInfo.packageName, 0)
         val isLaunchable = packageManager.getLaunchIntentForPackage(applicationInfo.packageName) == null
+        val isSystemApp = (applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM != 0) ||
+                (applicationInfo.flags and ApplicationInfo.FLAG_UPDATED_SYSTEM_APP != 0)
         val iconBytes: ByteArray = when (drawable) {
             is BitmapDrawable -> {
                 ByteArrayOutputStream().apply {
@@ -179,7 +220,8 @@ class GetApps internal constructor(ctx: Context) {
             "description" to description,
             "versionName" to packageInfo.versionName,
             "versionCode" to packageInfo.versionCode,
-            "isLaunchable" to isLaunchable
+            "isLaunchable" to isLaunchable,
+            "isSystemApp" to isSystemApp
         )
     }
 }

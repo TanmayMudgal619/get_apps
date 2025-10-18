@@ -31,7 +31,7 @@ void main() {
         description: null,
         isLaunchable: false,
         versionCode: 1,
-        versionName: "1.2");
+        versionName: "1.2", isSystemApp: false);
     final got = AppInfo.fromAndroidData(validAppData);
     expect(got.appName, chromeAppInfo.appName);
     expect(got.appPackage, chromeAppInfo.appPackage);

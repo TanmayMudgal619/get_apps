@@ -27,10 +27,11 @@ class GetAppsChannel extends GetAppsPlatform {
   }
 
   @override
-  Future<List<AppInfo>> getApps({bool includeSystemApps = false}) async {
+  Future<List<AppInfo>> getApps({AppType appType = AppType.all, LaunchType launchType = LaunchType.all}) async {
     try {
       final List<dynamic> result = await methodChannel.invokeMethod('getApps', {
-        "includeSystemApps": includeSystemApps,
+        "appType": appType.index,
+        "launchType": launchType.index
       });
       List<AppInfo> ourApps =
           result.map((e) => AppInfo.fromAndroidData(e)).toList();

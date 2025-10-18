@@ -27,9 +27,9 @@ class _MyAppState extends State<MyApp> {
         .onError((e, s) {
           print("Chrome is not installed on your device $e");
         });
-    userApps = GetApps().getApps();
+    userApps = GetApps().getApps(launchType: LaunchType.launchable);
     GetApps().appActionReceiver().forEach((packageAction) {
-      userApps = GetApps().getApps();
+      userApps = GetApps().getApps(launchType: LaunchType.launchable);
       setState(() {});
     });
     super.initState();

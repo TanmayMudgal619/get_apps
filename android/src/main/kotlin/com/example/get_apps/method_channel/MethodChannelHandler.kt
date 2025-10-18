@@ -5,6 +5,8 @@ import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import com.example.get_apps.GetApps
+import com.example.get_apps.AppType
+import com.example.get_apps.LaunchType
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
@@ -56,7 +58,10 @@ class MethodChannelHandler: MethodCallHandler {
 
   fun getAppsHandler(call: MethodCall, result: MethodChannel.Result){
     try{
-      val apps = getApps.getAppsList(call.argument<Boolean?>("includeSystemApps") ?: false)
+      val apps = getApps.getAppsList(
+        AppType.fromValue(call.argument<Int?>("appType") ?: 0),
+        LaunchType.fromValue(call.argument<Int?>("launchType") ?: 0)
+      )
       Handler(Looper.getMainLooper()).post {
         result.success(apps)
       }
