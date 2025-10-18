@@ -73,7 +73,7 @@ class _MyAppState extends State<MyApp> {
                             ),
                             subtitle: Text(e.description ?? ""),
                             onLongPress: () {
-                              GetApps().getAppInfo(e.appPackage);
+                              GetApps().deleteApp(e.appPackage);
                             },
                             onTap: () {
                               GetApps().openApp(e.appPackage);

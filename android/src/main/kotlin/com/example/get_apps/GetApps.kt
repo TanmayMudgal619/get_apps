@@ -135,7 +135,7 @@ class GetApps internal constructor(ctx: Context) {
         val appInfo = applicationInfo ?: packageManager.getApplicationInfo(packageName, 0)
 
         val appDataMap = getAppInfoMap(packageManager, appInfo)
-        if (appDataMap["isSystemApp"] as Boolean){
+        if (appDataMap["isLaunchable"] as Boolean){
             systemApps.add(appDataMap)
         }
         else{
@@ -148,7 +148,7 @@ class GetApps internal constructor(ctx: Context) {
         val drawable = applicationInfo.loadIcon(packageManager)
         val description = applicationInfo.loadDescription(packageManager)
         val packageInfo = packageManager.getPackageInfo(applicationInfo.packageName, 0)
-        val isSystemApp = packageManager.getLaunchIntentForPackage(applicationInfo.packageName) == null
+        val isLaunchable = packageManager.getLaunchIntentForPackage(applicationInfo.packageName) == null
         val iconBytes: ByteArray = when (drawable) {
             is BitmapDrawable -> {
                 ByteArrayOutputStream().apply {
@@ -179,7 +179,7 @@ class GetApps internal constructor(ctx: Context) {
             "description" to description,
             "versionName" to packageInfo.versionName,
             "versionCode" to packageInfo.versionCode,
-            "isSystemApp" to isSystemApp
+            "isLaunchable" to isLaunchable
         )
     }
 }

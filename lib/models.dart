@@ -6,7 +6,7 @@ class AppInfo {
   String appPackage;
   Uint8List appIcon;
   String? description;
-  bool isSystemApp;
+  bool isLaunchable;
   int versionCode;
   String? versionName;
 
@@ -15,7 +15,7 @@ class AppInfo {
     required this.appPackage,
     required this.appIcon,
     required this.description,
-    required this.isSystemApp,
+    required this.isLaunchable,
     required this.versionCode,
     required this.versionName,
   });
@@ -26,7 +26,7 @@ class AppInfo {
       appPackage: appData["packageName"],
       appIcon: Uint8List.fromList(appData["icon"]),
       description: appData["description"],
-      isSystemApp: appData["isSystemApp"],
+      isLaunchable: appData["isLaunchable"],
       versionCode: appData["versionCode"],
       versionName: appData["versionName"],
     );

@@ -7,7 +7,7 @@ const validAppData = {
   "packageName": "com.android.chrome",
   "icon": [1, 2, 3],
   "description": null,
-  "isSystemApp": false,
+  "isLaunchable": false,
   "versionCode": 1,
   "versionName": "1.2"
 };
@@ -17,7 +17,7 @@ const invalidKeyAppData = {
   "packageName": "com.android.chrome",
   "appIcon": [1, 2, 3],
   "description": null,
-  "isSystemApp": false,
+  "isLaunchable": false,
   "versionCode": 1,
   "versionName": "1.2"
 };
@@ -29,7 +29,7 @@ void main() {
         appPackage: "com.android.chrome",
         appIcon: Uint8List.fromList(const [1, 2, 3]),
         description: null,
-        isSystemApp: false,
+        isLaunchable: false,
         versionCode: 1,
         versionName: "1.2");
     final got = AppInfo.fromAndroidData(validAppData);
@@ -37,7 +37,7 @@ void main() {
     expect(got.appPackage, chromeAppInfo.appPackage);
     expect(got.appIcon, chromeAppInfo.appIcon);
     expect(got.description, chromeAppInfo.description);
-    expect(got.isSystemApp, chromeAppInfo.isSystemApp);
+    expect(got.isLaunchable, chromeAppInfo.isLaunchable);
     expect(got.versionCode, chromeAppInfo.versionCode);
     expect(got.versionName, chromeAppInfo.versionName);
   });
