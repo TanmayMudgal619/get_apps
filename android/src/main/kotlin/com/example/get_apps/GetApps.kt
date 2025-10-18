@@ -43,8 +43,7 @@ class GetApps internal constructor(ctx: Context) {
 
     private var activity: Activity?
     private var context: Context = ctx
-    private lateinit var systemApps: MutableList<Map<String, Any?>>
-    private lateinit var userApps: MutableList<Map<String, Any?>>
+    private lateinit var apps: MutableList<Map<String, Any?>>
     var isInitialized: Boolean = false
 
     init {
@@ -59,8 +58,7 @@ class GetApps internal constructor(ctx: Context) {
 
             Log.d("GetApps", "initCore: initializing get apps...")
             val packageManager = context.packageManager
-            systemApps = ArrayList()
-            userApps = ArrayList()
+            apps = ArrayList()
             val installedApps = packageManager.getInstalledApplications(0)
             for (applicationInfo in installedApps) {
                 addAppInList(applicationInfo.packageName, applicationInfo)
@@ -95,16 +93,20 @@ class GetApps internal constructor(ctx: Context) {
     ): List<Map<String, Any?>> {
         initCheck()
 
-        val result = when (appType) {
-            AppType.ALL -> systemApps + userApps
-            AppType.SYSTEM -> systemApps
-            AppType.USER -> userApps
-        }
+        return apps.filter { app ->
+            val matchesLaunchType = when (launchType) {
+                LaunchType.ALL -> true
+                LaunchType.LAUNCHABLE -> app["isLaunchable"] == true
+                LaunchType.NON_LAUNCHABLE -> app["isLaunchable"] == false
+            }
 
-        return if (launchType == LaunchType.ALL) {
-            result
-        } else {
-            result.filter { it["isLaunchable"] == (launchType == LaunchType.LAUNCHABLE) }
+            val matchesAppType = when (appType) {
+                AppType.ALL -> true
+                AppType.SYSTEM -> app["isSystemApp"] == true
+                AppType.USER -> app["isSystemApp"] == false
+            }
+
+            matchesLaunchType && matchesAppType
         }
     }
 
@@ -160,11 +162,7 @@ class GetApps internal constructor(ctx: Context) {
     }
 
     private fun removeAppFromList(packageName: String) {
-        systemApps = systemApps.filter {
-            it["packageName"].toString() != packageName
-        } as ArrayList<Map<String, Any?>>
-
-        userApps = userApps.filter {
+        apps = apps.filter {
             it["packageName"].toString() != packageName
         } as ArrayList<Map<String, Any?>>
     }
@@ -174,12 +172,7 @@ class GetApps internal constructor(ctx: Context) {
         val appInfo = applicationInfo ?: packageManager.getApplicationInfo(packageName, 0)
 
         val appDataMap = getAppInfoMap(packageManager, appInfo)
-        if (appDataMap["isSystemApp"] as Boolean){
-            systemApps.add(appDataMap)
-        }
-        else{
-            userApps.add(appDataMap)
-        }
+        apps.add(appDataMap)
     }
 
 
