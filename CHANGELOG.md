@@ -91,3 +91,8 @@
 ## 3.1.2
 
 * Renamed the field `isSystemApp` to `isLaunchable`.
+
+
+## 4.1.1
+
+* Modified the signature of `getApps` to include `AppType` and `LaunchType` filter.
