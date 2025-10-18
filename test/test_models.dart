@@ -22,6 +22,7 @@ const invalidKeyAppData = {
   "versionName": "1.2"
 };
 
+// Add more tests later on...
 void main() {
   test("App Info from Valid App Map", () {
     final chromeAppInfo = AppInfo(
