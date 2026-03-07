@@ -102,3 +102,8 @@
 ## 4.1.2
 
 * Updated project status.
+
+## 4.1.3
+
+* Fix add registration flag to avoid unregistering ActionReceiver not registered
+* Fix Receiving a added broadcast but the app does not exist (possibly not installed yet) will throw an exception

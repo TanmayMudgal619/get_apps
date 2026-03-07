@@ -17,6 +17,7 @@ class EventChannelHandler: StreamHandler {
   private var getApps: GetApps
   private var actionReceiver : ActionReceiver
   private var packageIntentFilter: IntentFilter
+  private var isReceiverRegistered = false
 
   constructor(context: Context, getApps: GetApps){
     this.context = context
@@ -36,11 +37,20 @@ class EventChannelHandler: StreamHandler {
         actionReceiver.setEventSink(events);
         actionReceiver.setListener(OnPackageActionNotify())
         context.registerReceiver(actionReceiver, packageIntentFilter)
+        isReceiverRegistered = true
       }
     }.start()
   }
 
   override fun onCancel(arguments: Any?) {
-    context.unregisterReceiver(actionReceiver)
+    if(isReceiverRegistered) {
+      try {
+        // If the screen is rotated multiple times, errors may still occur
+        context.unregisterReceiver(actionReceiver)
+      }catch (e: Exception){
+        //ignored
+        isReceiverRegistered = false
+      }
+    }
   }
 }

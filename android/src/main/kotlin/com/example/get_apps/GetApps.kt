@@ -169,8 +169,12 @@ class GetApps internal constructor(ctx: Context) {
 
     private fun addAppInList(packageName: String, applicationInfo: ApplicationInfo?) {
         val packageManager = context.packageManager;
-        val appInfo = applicationInfo ?: packageManager.getApplicationInfo(packageName, 0)
-
+        val appInfo = try {
+            applicationInfo ?: packageManager.getApplicationInfo(packageName, 0)
+        } catch (e: Exception) {
+            Log.e("GetApps", "Error getting app info: $packageName", e)
+            return
+        }
         val appDataMap = getAppInfoMap(packageManager, appInfo)
         apps.add(appDataMap)
     }
